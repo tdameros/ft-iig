@@ -3,6 +3,21 @@ import subprocess
 from turtle import st
 from colors import print_success, print_warning
 
+
+def print_ascii():
+    print("""
+  _  _ ___    __  __             _ _            _   _       
+ | || |__ \  |  \/  |           | (_)          | | | |      
+ | || |_ ) | | \  / | ___  _   _| |_ _ __   ___| |_| |_ ___ 
+ |__   _/ /  | |\/| |/ _ \| | | | | | '_ \ / _ \ __| __/ _ \\
+    | |/ /_  | |  | | (_) | |_| | | | | | |  __/ |_| ||  __/
+    |_|____| |_|  |_|\___/ \__,_|_|_|_| |_|\___|\__|\__\___|
+
+
+    """)
+
+def clear_console():
+    subprocess.run(["clear"])
 def compile(path, out_name, *args):
     gcc = subprocess.Popen(["gcc", "-Wall", "-Werror", "-Wextra", *args, "-o", out_name], cwd=path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     gcc.wait()

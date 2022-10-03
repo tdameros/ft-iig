@@ -1,44 +1,47 @@
 import subprocess
 from pathlib import Path
-from colors import print_success, print_warning
+from colors import print_success, print_warning, print_info
 import os
 from orchestrators.c03 import run_test_c03
+from utils import print_ascii, clear_console
 
-PATH = Path.home() / "goinfre/generateur_improba/"
 GOINFRE_PATH = Path.home() / "goinfre/"
+PATH = GOINFRE_PATH / "ft_ig/"
+PROJECTS = {
+    "LIBFT": print
+}
 
-days = ["C03", "C04", "C0R1", "C05"]
-
-def print_ascii():
-    print("""
-  _  _ ___    __  __             _ _            _   _       
- | || |__ \  |  \/  |           | (_)          | | | |      
- | || |_ ) | | \  / | ___  _   _| |_ _ __   ___| |_| |_ ___ 
- |__   _/ /  | |\/| |/ _ \| | | | | | '_ \ / _ \ __| __/ _ \\
-    | |/ /_  | |  | | (_) | |_| | | | | | |  __/ |_| ||  __/
-    |_|____| |_|  |_|\___/ \__,_|_|_|_| |_|\___|\__|\__\___|
-                                                            
-                                                            
-    """)
 
 def run_git_clone():
+    global PATH
+
     subprocess.run(["rm", "-fr", PATH])
-    
     subprocess.run(["clear"])
     print_ascii()
-    url_repo = input("Entrer l'url du repo :")
-    clone_process = subprocess.Popen(["git", "clone", url_repo, "generateur_improba"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
+    url_or_path = input("Enter repository URL or project PATH :")
+    if os.path.exists(url_or_path):
+        PATH = Path(url_or_path)
+        return
+    clone_process = subprocess.Popen(
+        ["git", "clone", url_or_path, "ft_ig"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
     clone_process.wait()
     while clone_process.returncode != 0:
-        url_repo = input("Entrer l'url du repo :")
-        clone_process = subprocess.Popen(["git", "clone", url_repo, "generateur_improba"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
+        url_or_path = input("Enter repository URL or project PATH :")
+        if os.path.exists(url_or_path):
+            PATH = Path(url_or_path)
+            return
+        clone_process = subprocess.Popen(
+            ["git", "clone", url_or_path, "ft_ig"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
         clone_process.wait()
 
 
 def run_norminette():
-    norminette = subprocess.Popen(["norminette"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=PATH)
+    norminette = subprocess.Popen(["norminette"], stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE, cwd=PATH)
     norminette.wait()
-    if (norminette.returncode == 1):
+    if norminette.returncode == 1:
         print_warning("NORMINETTE ERROR !")
         out, err = norminette.communicate()
         print(out.decode())
@@ -46,24 +49,27 @@ def run_norminette():
         print_success("Norminette OK")
 
 
-if __name__ == "__main__":
-    subprocess.run(["clear"])
-    print_ascii()
+def get_goinfre_dir():
     if not os.path.isdir(GOINFRE_PATH):
-        print_warning("Le GOINFRE n'est pas présent sur ce poste.")
-    else:
-        print("3 - C03\n4 - C04\n5 - C05\nR1 - Rush01\n")
-        day_number = input("Selectionnez votre day :")
+        print_warning("GOINFRE directory not found.")
+        local_goinfre = Path.cwd() / "goinfre"
+        rm = subprocess.Popen(["rm", "-rf", local_goinfre])
+        rm.wait()
+        os.mkdir(local_goinfre)
+        print_info("GOINFRE directory create in the current path.")
+        return local_goinfre
+    return GOINFRE_PATH
 
-        while ((str("C0" + day_number) not in days)):
-            day_number = input("Selectionnez votre day :")
-        run_git_clone()
-        run_norminette()
-        if (str("C0" + day_number) == "C03"):
-            run_test_c03(PATH)
-        if (str("C0" + day_number) == "C04"):
-            run_test_c04(PATH)
-        if (str("C0" + day_number) == "C0R1"):
-            run_test_rush01(PATH)
-        if (str("C0" + day_number) == "C05"):
-            run_test_c05(PATH)
+
+if __name__ == "__main__":
+    clear_console()
+    print_ascii()
+    GOINFRE_PATH = get_goinfre_dir()
+    PATH = GOINFRE_PATH / "ft_ig"
+    print('\n' + '\n'.join([f"* - {project}" for project in PROJECTS.keys()]) + '\n')
+    select_project = input("Select your project (name) :")
+    while select_project not in PROJECTS:
+        select_project = input("[INVALID] Select your project (name) :")
+    run_git_clone()
+    run_norminette()
+    PROJECTS.get(select_project)(PATH)
