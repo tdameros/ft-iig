@@ -1,14 +1,8 @@
-from cProfile import run
-import imp
-from re import I
 import subprocess
 from pathlib import Path
 from colors import print_success, print_warning
 import os
-from test_py.c03 import run_test_c03
-from test_py.c04 import run_test_c04
-from test_py.rush01 import run_test_rush01
-from test_py.c05 import run_test_c05
+from orchestrators.c03 import run_test_c03
 
 PATH = Path.home() / "goinfre/generateur_improba/"
 GOINFRE_PATH = Path.home() / "goinfre/"
@@ -35,7 +29,7 @@ def run_git_clone():
     url_repo = input("Entrer l'url du repo :")
     clone_process = subprocess.Popen(["git", "clone", url_repo, "generateur_improba"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
     clone_process.wait()
-    while (clone_process.returncode != 0):
+    while clone_process.returncode != 0:
         url_repo = input("Entrer l'url du repo :")
         clone_process = subprocess.Popen(["git", "clone", url_repo, "generateur_improba"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=GOINFRE_PATH)
         clone_process.wait()

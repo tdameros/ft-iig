@@ -2,7 +2,6 @@ from pathlib import Path
 from utils import compile, copy, inject_argv, assert_equal, display_result
 from colors import print_warning, print_success, print_info
 import os
-from test_math import get_printable_ascii
 from random import randint
 
 NUMBER_RANDOM_TESTS = 100
