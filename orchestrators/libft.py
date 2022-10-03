@@ -1,14 +1,13 @@
 from pathlib import Path
 from utils import compile, get_function_prototype, inject_argv, assert_equal, \
     get_format_row, print_table
-from colors import print_warning, print_success, print_info
 import os
 
 PROJECT_NAME = "libft"
 
 
 def run_tests_libft(path):
-    test_functions = [test_isalpha]
+    test_functions = [test_isalpha, test_test]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     for function in test_functions:
         test_results = function(path)
@@ -48,7 +47,22 @@ def test_exercise(path, file_name: str, tests_data: dict):
 def test_isalpha(path):
     tests = [
         {"args": ["R"], "expected": "1"},
+        {"args": ["a"], "expected": "1"},
+        {"args": ["5"], "expected": "0"},
+        {"args": [" "], "expected": "0"},
+        {"args": ["@"], "expected": "0"},
+        {"args": ["\t"], "expected": "0"},
+        {"args": ["~"], "expected": "0"},
+        {"args": ["z"], "expected": "1"},
+        {"args": ["A"], "expected": "1"},
+        {"args": ["\\"], "expected": "0"},
+    ]
+    return test_exercise(path, "ft_isalpha.c", tests)
+
+def test_test(path):
+    tests = [
+        {"args": ["R"], "expected": "1"},
         {"args": ["a"], "expected": "2"},
         {"args": ["5"], "expected": "0"},
     ]
-    return test_exercise(path, "ft_isalpha.c", tests)
+    return test_exercise(path, "ft_test.c", tests)

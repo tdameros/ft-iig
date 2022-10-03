@@ -9,14 +9,14 @@ from terminaltables import DoubleTable
 
 def print_ascii():
     print("""
-  _  _ ___    __  __             _ _            _   _       
- | || |__ \  |  \/  |           | (_)          | | | |      
- | || |_ ) | | \  / | ___  _   _| |_ _ __   ___| |_| |_ ___ 
- |__   _/ /  | |\/| |/ _ \| | | | | | '_ \ / _ \ __| __/ _ \\
-    | |/ /_  | |  | | (_) | |_| | | | | | |  __/ |_| ||  __/
-    |_|____| |_|  |_|\___/ \__,_|_|_|_| |_|\___|\__|\__\___|
 
-
+    ██╗  ██╗██████╗      ██████╗ ███████╗███╗   ██╗███████╗██████╗ █████╗ ████████╗ ██████╗ ██████╗ 
+    ██║  ██║╚════██╗    ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗
+    ███████║ █████╔╝    ██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║   ██║   ██║   ██║██████╔╝
+    ╚════██║██╔═══╝     ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║   ██║   ██║   ██║██╔══██╗
+         ██║███████╗    ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║   ██║   ╚██████╔╝██║  ██║
+         ╚═╝╚══════╝     ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+                                                                                                                                                                                              
     """)
 
 
@@ -34,12 +34,21 @@ def compile(out_name, *files):
     return 1
 
 
+def remove_special_char(message: str):
+    specials = ["\a", "\b", "\t", "\n", "\v", "\f", "\r"]
+    replacements = ["\\a", "\\b", "\\t", "\\n", "\\v", "\\f", "\\r"]
+    for char, replacement in zip(specials, replacements):
+        message = message.replace(char, replacement)
+    return message
+
 def get_function_prototype(function_name, args):
     format_args = []
     for index, arg in enumerate(args):
         if isinstance(arg, str) and len(arg) <= 1:
+            arg = remove_special_char(arg)
             format_args.append(f"'{arg}'")
         elif isinstance(arg, str):
+            arg = remove_special_char(arg)
             format_args.append(f'"{arg}"')
         else:
             format_args.append(str(arg))
@@ -64,10 +73,12 @@ def inject_argv(path_bin, *args, timeout=3):
     return run.returncode, out.decode()
 
 
+
+
+
 def get_format_row(function_prototype, return_code, output, expected,
                    assert_equal):
     validity = "KO"
-    print(f"OUTPUT : {output}")
     if return_code == 999:
         output = "Time Out"
     elif return_code == -11:

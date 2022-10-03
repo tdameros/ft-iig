@@ -11,7 +11,7 @@ class bcolors:
 
 
 def print_warning(message: str):
-    print(bcolors.WARNING + message + bcolors.ENDC)
+    print(bcolors.FAIL + message + bcolors.ENDC)
 
 
 def print_success(message: str):
@@ -23,7 +23,7 @@ def print_info(message: str):
 
 
 def get_warning_messsage(message: str):
-    return bcolors.WARNING + message + bcolors.ENDC
+    return bcolors.FAIL + message + bcolors.ENDC
 
 
 def get_success_message(message: str):
