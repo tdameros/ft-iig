@@ -1,4 +1,3 @@
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -10,11 +9,26 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 def print_warning(message: str):
     print(bcolors.WARNING + message + bcolors.ENDC)
+
 
 def print_success(message: str):
     print(bcolors.OKGREEN + message + bcolors.ENDC)
 
+
 def print_info(message: str):
     print(bcolors.OKCYAN + message + bcolors.ENDC)
+
+
+def get_warning_messsage(message: str):
+    return bcolors.WARNING + message + bcolors.ENDC
+
+
+def get_success_message(message: str):
+    return bcolors.OKGREEN + message + bcolors.ENDC
+
+
+def get_info_message(message: str):
+    return bcolors.OKCYAN + message + bcolors.ENDC

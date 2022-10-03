@@ -1,7 +1,10 @@
 from re import sub
 import subprocess
 from turtle import st
+
+import colors
 from colors import print_success, print_warning
+from terminaltables import DoubleTable
 
 
 def print_ascii():
@@ -16,29 +19,43 @@ def print_ascii():
 
     """)
 
+
 def clear_console():
     subprocess.run(["clear"])
-def compile(path, out_name, *args):
-    gcc = subprocess.Popen(["gcc", "-Wall", "-Werror", "-Wextra", *args, "-o", out_name], cwd=path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+def compile(out_name, *files):
+    gcc = subprocess.Popen(
+        ["gcc", "-Wall", "-Werror", "-Wextra", *files, "-o", out_name],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     gcc.wait()
-    if (gcc.returncode != 0):
+    if gcc.returncode != 0:
         return 0
     return 1
 
-def copy(path_dest, path_file):
-    cp = subprocess.Popen(["cp", path_file, path_dest])
-    cp.wait()
-    if (cp.returncode != 0):
-        return 0
-    return 1
+
+def get_function_prototype(function_name, args):
+    format_args = []
+    for index, arg in enumerate(args):
+        if isinstance(arg, str) and len(arg) <= 1:
+            format_args.append(f"'{arg}'")
+        elif isinstance(arg, str):
+            format_args.append(f'"{arg}"')
+        else:
+            format_args.append(str(arg))
+    function_prototype = f"{function_name}({', '.join(format_args)})"
+    return function_prototype
+
 
 def assert_equal(stdout, expected: str):
     return stdout == expected
 
-def inject_argv(path, out_name,*args):
-    run = subprocess.Popen([f"./{out_name}", *args], cwd=path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+def inject_argv(path_bin, *args, timeout=3):
+    run = subprocess.Popen([path_bin, *args],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
-        run.wait(timeout=3)
+        run.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
         return 999, "Time Out"
     out, err = run.communicate()
@@ -46,16 +63,30 @@ def inject_argv(path, out_name,*args):
         return run.returncode, err.decode()
     return run.returncode, out.decode()
 
-def display_result(function_prototype, return_code, user_std, test_std, assert_equal, display_nbr):
+
+def get_format_row(function_prototype, return_code, output, expected,
+                   assert_equal):
+    validity = "KO"
+    print(f"OUTPUT : {output}")
     if return_code == 999:
-        print_warning(f"""KO : {function_prototype} => {test_std} | Votre résultat => TIME OUT""")
-        return
+        output = "Time Out"
     elif return_code == -11:
-        print_warning(f"""KO : {function_prototype} => {test_std} | Votre résultat => SEGMENTATION FAULT""")
-        return 
+        output = "Segmentation Fault"
     elif return_code == -10:
-        print_warning(f"""KO : {function_prototype} => {test_std} | Votre résultat => BUS ERROR""")
-    if assert_equal and display_nbr < 10:
-        print_success(f"""OK : {function_prototype} => {test_std} | Votre résultat => {user_std}""")
-    elif not assert_equal:
-        print_warning(f"""KO : {function_prototype} => {test_std} | Votre résultat => {user_std}""")
+        output = "Bus Error"
+    elif assert_equal:
+        validity = "OK"
+    row = [function_prototype, output, expected, validity]
+    for index_column, column in enumerate(row):
+        if return_code == 998:
+            row[index_column] = colors.get_info_message(column)
+        elif not assert_equal:
+            row[index_column] = colors.get_warning_messsage(column)
+        else:
+            row[index_column] = colors.get_success_message(column)
+    return row
+
+
+def print_table(title, rows):
+    table_instance = DoubleTable(rows, title)
+    print(table_instance.table)

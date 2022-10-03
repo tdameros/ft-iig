@@ -2,13 +2,13 @@ import subprocess
 from pathlib import Path
 from colors import print_success, print_warning, print_info
 import os
-from orchestrators.c03 import run_test_c03
+from orchestrators.libft import run_tests_libft
 from utils import print_ascii, clear_console
 
 GOINFRE_PATH = Path.home() / "goinfre/"
 PATH = GOINFRE_PATH / "ft_ig/"
 PROJECTS = {
-    "LIBFT": print
+    "LIBFT": run_tests_libft,
 }
 
 
