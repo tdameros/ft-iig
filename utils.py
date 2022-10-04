@@ -25,6 +25,7 @@ def clear_console():
 
 
 def compile(out_name, *files):
+    print(*["gcc", "-Wall", "-Werror", "-Wextra", *files, "-o", out_name])
     gcc = subprocess.Popen(
         ["gcc", "-Wall", "-Werror", "-Wextra", *files, "-o", out_name],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -33,6 +34,12 @@ def compile(out_name, *files):
         return 0
     return 1
 
+def make_re(path):
+    make = subprocess.Popen(["make", "re"], cwd=path)
+    make.wait()
+    if make.returncode != 0:
+        return 0
+    return 1
 
 def remove_special_char(message: str):
     specials = ["\a", "\b", "\t", "\n", "\v", "\f", "\r"]
@@ -61,7 +68,8 @@ def assert_equal(stdout, expected: str):
 
 
 def inject_argv(path_bin, *args, timeout=3):
-    run = subprocess.Popen([path_bin, *args],
+    str_args = [str(arg) for arg in args]
+    run = subprocess.Popen([path_bin, *str_args],
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
         run.wait(timeout=timeout)
