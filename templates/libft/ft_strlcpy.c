@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 20:41:59 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/06 20:42:05 by tdameros         ###   ########lyon.fr   */
+/*   Created: 2022/10/06 22:29:35 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/06 23:01:09 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int	ft_isdigit(int c);
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 int	main(int argc, char **argv)
 {
-	(void) argc;
-	printf("%d", ft_isdigit(argv[1][0]));
+	size_t	result;
+	char	dest[100];
+
+	if (argc == 4)	
+	{
+		result = ft_strlcpy(dest, argv[2], atoi(argv[3])); 
+		printf("%s|%zu", dest, result);
+	}
 	return (0);
 }

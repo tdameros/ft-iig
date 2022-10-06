@@ -4,7 +4,7 @@ from turtle import st
 
 import colors
 from colors import print_success, print_warning
-from terminaltables import DoubleTable
+from terminaltables.other_tables import DoubleTable
 
 
 def print_ascii():
@@ -80,10 +80,6 @@ def inject_argv(path_bin, *args, timeout=3):
         return run.returncode, err.decode()
     return run.returncode, out.decode()
 
-
-
-
-
 def get_format_row(function_prototype, return_code, output, expected,
                    assert_equal):
     validity = "KO"
@@ -99,7 +95,7 @@ def get_format_row(function_prototype, return_code, output, expected,
     for index_column, column in enumerate(row):
         if return_code == 998:
             row[index_column] = colors.get_info_message(column)
-        elif not assert_equal:
+        elif validity == "KO":
             row[index_column] = colors.get_warning_messsage(column)
         else:
             row[index_column] = colors.get_success_message(column)

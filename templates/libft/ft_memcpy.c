@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 19:15:27 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/06 19:15:30 by tdameros         ###   ########lyon.fr   */
+/*   Created: 2022/10/06 20:43:46 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/06 21:39:40 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	*ft_memset(void *s, int c, size_t n);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
 
 void	print_bytes(void *s, size_t n)
 {
@@ -31,47 +31,44 @@ void	print_bytes(void *s, size_t n)
 	}
 }
 
-void	memset_string_type(char *s, int c, size_t n)
+void	memcpy_string_type(char *dest, char *src, size_t n)
 {
 	size_t	len;
 	void	*return_ptr;
 
-	len = strlen(s);
-	return_ptr = ft_memset(s, c, n);
+	len = strlen(dest);
+	return_ptr = ft_memcpy(dest, src, n);
 	print_bytes(return_ptr, len);
 }
 
-void	memset_int_type(int s, int c, size_t n)
+void	memcpy_int_type(int dest, int src, size_t n)
 {
 	void	*return_ptr;
 
-	return_ptr = ft_memset(&s, c, n);
-	print_bytes(return_ptr, sizeof(s));
+	return_ptr = ft_memcpy(&dest, &src, n);
+	print_bytes(return_ptr, sizeof(dest));
 }
 
-void	memset_float_type(float s, int c, size_t n)
+void	memcpy_float_type(float dest, float src, size_t n)
 {
 	void	*return_ptr;
 
-	return_ptr = ft_memset(&s, c, n);
-	print_bytes(return_ptr, sizeof(s));
+	return_ptr = ft_memcpy(&dest, &src, n);
+	print_bytes(return_ptr, sizeof(dest));
 }
 
 int	main(int argc, char **argv)
 {
-	int		c;
 	size_t	n;
 
 	if (argc == 5)
 	{
-		c = atoi(argv[3]);
 		n = atoi(argv[4]);
 		if (!strcmp(argv[1], "string"))
-			memset_string_type(argv[2], c, n);
+			memcpy_string_type(argv[2], argv[3], n);
 		else if (!strcmp(argv[1], "int"))
-			memset_int_type(atoi(argv[2]), c, n);
+			memcpy_int_type(atoi(argv[2]), atoi(argv[3]), n);
 		else if (!strcmp(argv[1], "float"))
-			memset_float_type(atof(argv[2]), c, n);
+			memcpy_float_type(atof(argv[2]), atof(argv[3]), n);
 	}
-	return (0);
 }

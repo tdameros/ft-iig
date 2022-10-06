@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/06 20:45:37 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/06 22:21:27 by tdameros         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,10 +18,10 @@ void	ft_bzero(void *s, size_t n);
 
 void	print_bytes(void *s, size_t n)
 {
-	char	*ptr;
+	unsigned char	*ptr;
 	size_t	index;
 
-	ptr = (char *) s;
+	ptr = (unsigned char *) s;
 	index = 0;
 	while (index < n)
 	{
