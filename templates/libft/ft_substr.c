@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 23:19:53 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/07 11:07:15 by tdameros         ###   ########lyon.fr   */
+/*   Created: 2022/10/08 22:47:33 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/08 22:51:03 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
+char *ft_substr(char const *s, unsigned int start, size_t len);
 
 int	main(int argc, char **argv)
 {
-	size_t	result;
-	char	dest[100];
+	unsigned int	start;
+	size_t			len;
+	char			*substr;
 
-	(void) argc;
-	strcpy(dest, argv[1]);
-	result = ft_strlcat(dest, argv[2], atoi(argv[3]));
-	printf("%s|%zu", dest, result);
+	if (argc == 4)
+	{
+		start = atoi(argv[2]);
+		len = atoi(argv[3]);
+		substr = ft_substr(argv[1], start, len);
+		if (substr != NULL)
+		{
+			printf("%s", substr);
+			free(substr);
+		}
+	}
 }

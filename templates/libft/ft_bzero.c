@@ -6,7 +6,7 @@
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 20:45:37 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/06 22:21:27 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/07 11:06:54 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_bzero(void *s, size_t n);
 void	print_bytes(void *s, size_t n)
 {
 	unsigned char	*ptr;
-	size_t	index;
+	size_t			index;
 
 	ptr = (unsigned char *) s;
 	index = 0;

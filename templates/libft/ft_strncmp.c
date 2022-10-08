@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 23:19:53 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/07 11:07:15 by tdameros         ###   ########lyon.fr   */
+/*   Created: 2022/10/07 11:31:08 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/07 11:41:56 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 int	main(int argc, char **argv)
 {
-	size_t	result;
-	char	dest[100];
+	int	result;
 
-	(void) argc;
-	strcpy(dest, argv[1]);
-	result = ft_strlcat(dest, argv[2], atoi(argv[3]));
-	printf("%s|%zu", dest, result);
+	if (argc == 4)
+	{
+		result = ft_strncmp(argv[1], argv[2], atoi(argv[3]));
+		if (result < 0)
+			result = -1;
+		else if (result > 0)
+			result = 1;
+		else
+			result = 0;
+		printf("%d", result);
+	}
+	return (0);
 }

@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 23:19:53 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/07 11:07:15 by tdameros         ###   ########lyon.fr   */
+/*   Created: 2022/10/08 22:01:02 by tdameros          #+#    #+#             */
+/*   Updated: 2022/10/08 22:31:34 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
+char *ft_strdup(const char *s);
 
 int	main(int argc, char **argv)
 {
-	size_t	result;
-	char	dest[100];
+	char	*s_dup;
 
-	(void) argc;
-	strcpy(dest, argv[1]);
-	result = ft_strlcat(dest, argv[2], atoi(argv[3]));
-	printf("%s|%zu", dest, result);
+	if (argc == 2)
+	{
+		s_dup = ft_strdup(argv[1]);
+		if (s_dup == argv[1])
+			printf("Not a dup string");
+		else
+			printf("%s", s_dup);
+		free(s_dup);
+	}
 }

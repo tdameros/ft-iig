@@ -6,7 +6,7 @@
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 20:43:46 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/06 22:18:54 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/07 11:06:35 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n);
 void	print_bytes(void *s, size_t n)
 {
 	unsigned char	*ptr;
-	size_t	index;
+	size_t			index;
 
 	ptr = (unsigned char *) s;
 	index = 0;
@@ -105,4 +105,3 @@ int	main(int argc, char **argv)
 			memmove_float_type(atof(argv[2]), atof(argv[3]), n, overlap);
 	}
 }
-
