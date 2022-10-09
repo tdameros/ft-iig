@@ -25,7 +25,7 @@ def clear_console():
 
 
 def compile(out_name, *files):
-    print(*["gcc", "-Wall", "-Werror", "-Wextra","-fsanitize=adress", *files, "-o", out_name])
+    print(*["gcc", "-Wall", "-Werror", "-Wextra","-fsanitize=address", *files, "-o", out_name])
     gcc = subprocess.Popen(
         ["gcc", "-Wall", "-Werror", "-Wextra", *files, "-o", out_name],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE)

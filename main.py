@@ -18,7 +18,8 @@ def run_git_clone():
     subprocess.run(["rm", "-fr", PATH])
     subprocess.run(["clear"])
     print_ascii()
-    url_or_path = input("Enter repository URL or project PATH :")
+    # url_or_path = input("Enter repository URL or project PATH :")
+    url_or_path = "/home/tomy/dev/42/libft"
     if os.path.exists(url_or_path):
         PATH = Path(url_or_path)
         return

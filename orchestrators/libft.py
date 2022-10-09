@@ -32,7 +32,8 @@ def run_tests_libft(path):
                       ft_strdup,
                       ft_substr,
                       ft_strjoin,
-                      ft_strtrim]
+                      ft_strtrim,
+                      ft_split]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     print("Compile libft.a")
     if not make_re(path):
@@ -471,6 +472,7 @@ def ft_strjoin(path):
     ]
     return test_exercise(path, "ft_strjoin.c", "libft.a", tests)
 
+
 def ft_strtrim(path):
     tests = [
         {"args": ["  test  ", " "], "expected": "test"},
@@ -483,3 +485,20 @@ def ft_strtrim(path):
         {"args": ["", ""], "expected": ""},
     ]
     return test_exercise(path, "ft_strtrim.c", "libft.a", tests)
+
+
+def ft_split(path):
+    tests = [
+        {"args": ["", "c"], "expected": "{}"},
+        {"args": ["hello", "l"], "expected": "{he, o}"},
+        {"args": ["hellol", "l"], "expected": "{he, o}"},
+        {"args": ["tttttt", "t"], "expected": "{}"},
+        {"args": ["42424242", "2"], "expected": "{4, 4, 4, 4}"},
+        {"args": ["marvin\tbot\t", "\t"], "expected": "{marvin, bot}"},
+        {"args": ["test", ""], "expected": "{test}"},
+        {"args": ["libft.h.c", "."], "expected": "{libft, h, c}"},
+        {"args": ["swimming_pool", "m"], "expected": "{swi, ing_pool}"},
+        {"args": ["ttttett.", "t"], "expected": "{e, .}"},
+        {"args": ["444444442", "4"], "expected": "{2}"},
+    ]
+    return test_exercise(path, "ft_split.c", "libft.a", tests)
