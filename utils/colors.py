@@ -32,3 +32,13 @@ def get_success_message(message: str):
 
 def get_info_message(message: str):
     return bcolors.OKCYAN + message + bcolors.ENDC
+
+
+def remove_colors(message: str):
+    colors = [bcolors.OKGREEN,
+              bcolors.FAIL,
+              bcolors.OKCYAN,
+              bcolors.ENDC]
+    for color in colors:
+        message = message.replace(color, "")
+    return message

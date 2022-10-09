@@ -1,4 +1,9 @@
 from pathlib import Path
+
+import colors
+import utils
+from colors import get_success_message, get_warning_messsage, print_info, \
+    print_warning
 from utils import compile, get_function_prototype, inject_argv, assert_equal, \
     get_format_row, print_table, make_re
 import os
@@ -6,7 +11,7 @@ import os
 PROJECT_NAME = "libft"
 
 
-def run_tests_libft(path):
+def run_tests(path):
     test_functions = [ft_isalpha,
                       ft_isdigit,
                       ft_isalnum,
@@ -35,13 +40,17 @@ def run_tests_libft(path):
                       ft_strtrim,
                       ft_split]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
-    print("Compile libft.a")
+    print_info("Compiling libft.a with your makefile.")
     if not make_re(path):
-        print("libft.a does not compile")
-        return
+        return print_warning("libft.a does not compile !")
+    print_info("Running tests...")
     for function in test_functions:
         test_results = function(path)
-        rows += test_results
+        test_results_ko = utils.remove_ok_tests(test_results)
+        if len(test_results_ko) > 0:
+            rows += test_results_ko
+        else:
+            rows.append(get_format_row(function.__name__, 0, "", "", True))
     print_table(f" {PROJECT_NAME.upper()} SUMMARY ", rows)
 
 
@@ -63,7 +72,8 @@ def test_exercise(path, template: str, lib: str, tests_data: dict):
         test_results.append(row)
         return test_results
     for test in tests_data:
-        function_prototype = get_function_prototype(template[:-2], test.get("args"))
+        function_prototype = get_function_prototype(template[:-2],
+                                                    test.get("args"))
         test_output = inject_argv(path_bin, *(test.get("args")))
         assert_value = assert_equal(test_output[1], test.get("expected"))
         row = get_format_row(function_prototype, test_output[0], test_output[1],
@@ -76,7 +86,7 @@ def test_exercise(path, template: str, lib: str, tests_data: dict):
 
 def ft_isalpha(path):
     tests = [
-        {"args": ["R"], "expected": "1"},
+        {"args": ["R"], "expected": "2"},
         {"args": ["a"], "expected": "1"},
         {"args": ["5"], "expected": "0"},
         {"args": [" "], "expected": "0"},
@@ -140,6 +150,7 @@ def ft_isascii(path):
     ]
     return test_exercise(path, "ft_isascii.c", "libft.a", tests)
 
+
 def ft_isprint(path):
     tests = [
         {"args": [0], "expected": "0"},
@@ -155,6 +166,7 @@ def ft_isprint(path):
         {"args": [92], "expected": "1"},
     ]
     return test_exercise(path, "ft_isprint.c", "libft.a", tests)
+
 
 def ft_strlen(path):
     tests = [
@@ -203,11 +215,14 @@ def ft_bzero(path):
     ]
     return test_exercise(path, "ft_bzero.c", "libft.a", tests)
 
+
 def ft_memcpy(path):
     tests = [
-        {"args": ["string", "12345", "hello world", 5], "expected": "104|101|108|108|111|"},
+        {"args": ["string", "12345", "hello world", 5],
+         "expected": "104|101|108|108|111|"},
         {"args": ["string", "12", "42", 2], "expected": "52|50|"},
-        {"args": ["string", "12345", "network", 0], "expected": "49|50|51|52|53|"},
+        {"args": ["string", "12345", "network", 0],
+         "expected": "49|50|51|52|53|"},
         {"args": ["int", "1234", 2546, 4], "expected": "242|9|0|0|"},
         {"args": ["int", "1234", 10000005, 4], "expected": "133|150|152|0|"},
         {"args": ["int", "1234", 42424242, 2], "expected": "178|87|0|0|"},
@@ -222,11 +237,15 @@ def ft_memcpy(path):
 
 def ft_memmove(path):
     tests = [
-        {"args": ["string", "src++", "hello ", 5], "expected": "104|101|108|108|111|0|"},
+        {"args": ["string", "src++", "hello ", 5],
+         "expected": "104|101|108|108|111|0|"},
         {"args": ["string", "1234", "42", 2], "expected": "52|50|"},
-        {"args": ["string", "12345", "coucou", 5], "expected": "99|111|117|99|111|0|"},
-        {"args": ["string", "src++", "bidule", 5], "expected": "98|105|100|117|108|0|"},
-        {"args": ["string", "src++", "clang", 0], "expected": "108|97|110|103|0|"},
+        {"args": ["string", "12345", "coucou", 5],
+         "expected": "99|111|117|99|111|0|"},
+        {"args": ["string", "src++", "bidule", 5],
+         "expected": "98|105|100|117|108|0|"},
+        {"args": ["string", "src++", "clang", 0],
+         "expected": "108|97|110|103|0|"},
         {"args": ["int", "src++", 145552, 4], "expected": "144|56|2|0|"},
         {"args": ["int", "src++", 123456777, 2], "expected": "9|205|7|0|"},
         {"args": ["int", "1234", 14524, 4], "expected": "188|56|0|0|"},
@@ -300,6 +319,7 @@ def ft_tolower(path):
     ]
     return test_exercise(path, "ft_tolower.c", "libft.a", tests)
 
+
 def ft_strchr(path):
     tests = [
         {"args": ["Hello World", "W"], "expected": "World"},
@@ -335,6 +355,7 @@ def ft_strrchr(path):
     ]
     return test_exercise(path, "ft_strrchr.c", "libft.a", tests)
 
+
 def ft_strncmp(path):
     tests = [
         {"args": ["Hello", "Hello", 5], "expected": "0"},
@@ -352,21 +373,25 @@ def ft_strncmp(path):
     ]
     return test_exercise(path, "ft_strncmp.c", "libft.a", tests)
 
+
 def ft_memchr(path):
     tests = [
         {"args": ["string", "hello", 111, 5], "expected": "valid return ptr"},
         {"args": ["string", "marvin", 118, 6], "expected": "valid return ptr"},
-        {"args": ["string", "42 network", 1, 2], "expected": "valid return ptr"},
+        {"args": ["string", "42 network", 1, 2],
+         "expected": "valid return ptr"},
         {"args": ["string", "42", 50, 1], "expected": "valid return ptr"},
         {"args": ["int", 125, 125, 4], "expected": "valid return ptr"},
         {"args": ["int", 105542, 156, 4], "expected": "valid return ptr"},
         {"args": ["int", 2147483647, 255, 4], "expected": "valid return ptr"},
         {"args": ["float", 0, 0, 4], "expected": "valid return ptr"},
         {"args": ["float", 423.4222, 106, 2], "expected": "valid return ptr"},
-        {"args": ["float", 54477.52555, 255, 4], "expected": "valid return ptr"},
+        {"args": ["float", 54477.52555, 255, 4],
+         "expected": "valid return ptr"},
 
     ]
     return test_exercise(path, "ft_memchr.c", "libft.a", tests)
+
 
 def ft_memcmp(path):
     tests = [
