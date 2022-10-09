@@ -1,10 +1,10 @@
-# generateur-d-improbabilite
+# Infinite Improbability Generator
 
-Cette moulinette permet de lancer 100 tests random sur les fonctions, en cas de fichier non rendu, de norme erreur, d'erreur de compilation, de timeout, de segmentation fault ou de abort, la moulinette vous préviendra avec un warning.
-Si vous trouvez des bugs, n'hésitez pas a ouvrir une issue sur le repo.
+I'm sharing with you a testing tool that I developed to help me in my studies at 42 Lyon.
 
-## Disclaimer : en correction cette moulinette ne suffit pas, vérifiez toujours le code à la main !
+**DISCLAIMER** : It is a tool, so automatic tests are not enough to validate a correction, remember to check everything yourself.
 
+If you find a problem, don't hesitate to open an issue and if you want to participate you can open a pull request.
 
 ## Get started (just run)
 

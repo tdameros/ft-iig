@@ -13,6 +13,12 @@ def get_format_row(function_prototype, return_code, output, expected,
         output = "Bus Error"
     elif assert_equal:
         validity = "OK"
+    if "AddressSanitizer" in output:
+        output = "AddressSanitizer"
+        validity = "KO"
+    elif "LeakSanitizer" in output:
+        output = "LeakSanitizer"
+        validity = "KO"
     row = [function_prototype, output, expected, validity]
     for index_column, column in enumerate(row):
         if return_code == 998:

@@ -1,25 +1,29 @@
 import subprocess
-from pathlib import Path
-from colors import print_success, print_warning, print_info
 import os
-from orchestrators.libft import run_tests_libft
-from utils import print_ascii, clear_console
+import logging
+from pathlib import Path
+
+import tests.libft
+from utils.file import rm_rf
+from utils.display import print_ascii, clear_console
+from utils.colors import print_info, print_warning, print_success
 
 GOINFRE_PATH = Path.home() / "goinfre/"
 PATH = GOINFRE_PATH / "ft_iig/"
 PROJECTS = {
-    "LIBFT": run_tests_libft,
+    "LIBFT": tests.libft.run_tests,
 }
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s : %(message)s')
 
 def run_git_clone():
     global PATH
 
-    subprocess.run(["rm", "-fr", PATH])
-    subprocess.run(["clear"])
+    rm_rf(PATH)
+    clear_console()
     print_ascii()
-    # url_or_path = input("Enter repository URL or project PATH :")
-    url_or_path = "/home/tomy/dev/42/libft"
+    url_or_path = input("Enter repository URL or project PATH :")
     if os.path.exists(url_or_path):
         PATH = Path(url_or_path)
         return
@@ -54,8 +58,7 @@ def get_goinfre_dir():
     if not os.path.isdir(GOINFRE_PATH):
         print_warning("GOINFRE directory not found.")
         local_goinfre = Path.cwd() / "goinfre"
-        rm = subprocess.Popen(["rm", "-rf", local_goinfre])
-        rm.wait()
+        rm_rf(local_goinfre)
         os.mkdir(local_goinfre)
         print_info("GOINFRE directory create in the current path.")
         return local_goinfre

@@ -5,16 +5,22 @@ from terminaltables.other_tables import DoubleTable
 
 
 def clear_console():
-    os.system("clear")
-    os.system("cls")
+    if os.name == "posix":
+        os.system("clear")
+    else:
+        os.system("cls")
 
 
 def print_center(message):
     for row in message.split("\n"):
         row_without_colors = remove_colors(row)
-        white_spaces = [" " for _ in range(
-            os.get_terminal_size().columns // 2 - len(
-                row_without_colors) // 2)]
+        try:
+            white_spaces = [" " for _ in range(
+                os.get_terminal_size().columns // 2 - len(
+                    row_without_colors) // 2)]
+        except:
+            print("Run the program in other terminal")
+            exit(1)
         white_spaces = "".join(white_spaces)
         print(white_spaces + row)
 

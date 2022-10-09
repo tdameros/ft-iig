@@ -1,10 +1,14 @@
 import subprocess
+import logging
 
 
 def compile(out_name, *files):
-    # print(*["gcc", "-Wall", "-Werror", "-Wextra","-fsanitize=address", *files, "-o", out_name])
+    logging.debug(out_name)
+    print_files = " ".join([str(file) for file in files])
+    logging.debug(" ".join(["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", print_files, "-o", str(out_name)]))
     gcc = subprocess.Popen(
-        ["gcc", "-Wall", "-Werror", "-Wextra", *files, "-o", out_name],
+        ["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", *files,
+         "-o", out_name],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     gcc.wait()
     if gcc.returncode != 0:
@@ -13,6 +17,7 @@ def compile(out_name, *files):
 
 
 def make_re(path):
+    logging.debug(f"make re ({str(path)})")
     make = subprocess.Popen(["make", "re"], cwd=path)
     make.wait()
     if make.returncode != 0:
