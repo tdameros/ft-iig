@@ -14,7 +14,7 @@ PROJECTS = {
     "LIBFT": tests.libft.run_tests,
 }
 
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.WARNING,
                     format='%(asctime)s : %(message)s')
 
 def run_git_clone():
