@@ -8,10 +8,11 @@ If you find a problem, don't hesitate to open an issue and if you want to partic
 
 ## Get started (just run)
 
+Run `launcher.py` for auto-update else run `main.py`.
 ```
-git clone https://github.com/Tom-Drs/generateur-d-improbabilite.git moulinette
-cd moulinette
-python3 main.py
+git clone https://github.com/tdameros/ft-iig
+cd ft-iig
+python3 launcher.py
 ```
 
 <img width="782" alt="Screen Shot 2022-08-13 at 10 19 05 PM" src="https://user-images.githubusercontent.com/50496792/184509609-531564b0-306f-41c4-bcf3-b38b0f107f27.png">
