@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vfries <vfries@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 20:43:46 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/10 00:22:13 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 20:33:00 by vfries           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ void	memmove_int_type(int dest, int src, size_t n, int overlap)
 		return_ptr = ft_memmove(&dest, &src, n);
 	}
 	print_bytes(return_ptr, n);
-	free(int_ptr);
+	if (overlap)
+		free(int_ptr);
 }
 
 void	memmove_float_type(float dest, float src, size_t n, int overlap)
@@ -92,7 +93,8 @@ void	memmove_float_type(float dest, float src, size_t n, int overlap)
 		return_ptr = ft_memmove(&dest, &src, n);
 	}
 	print_bytes(return_ptr, n);
-	free(float_ptr);
+	if (overlap)
+		free(float_ptr);
 }
 
 int	main(int argc, char **argv)
@@ -105,10 +107,12 @@ int	main(int argc, char **argv)
 		n = atoi(argv[4]);
 		if (!strcmp(argv[2], "src++"))
 			overlap = 1;
+		else
+			overlap = 0;
 		if (!strcmp(argv[1], "string"))
 			memmove_string_type(argv[2], argv[3], n, overlap);
 		else if (!strcmp(argv[1], "int"))
-		{	
+		{
 			int test1 = atoi(argv[2]);
 			int	test2 = atoi(argv[3]);
 			memmove_int_type(test1, test2, n, overlap);
