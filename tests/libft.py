@@ -43,18 +43,14 @@ def test_exercise(path, template: str, lib: str, tests_data: dict):
     path_lib = path / lib
     path_bin_tests_dir = path / ".bin_tests"
     path_bin = path_bin_tests_dir / template[:-2]
-    test_results = []
     if not os.path.exists(path_bin_tests_dir):
         os.mkdir(path_bin_tests_dir)
     if not os.path.exists(path_lib):
-        row = get_format_row(template[:-2], 998, "File not found", lib, False)
-        test_results.append(row)
-        return test_results
+        return [get_format_row(template[:-2], 998, "File not found", lib, False)]
     if not compile(path_bin, path_template, path_lib):
-        row = get_format_row(template, 1, "Does not compile (with flags)", "",
-                             False)
-        test_results.append(row)
-        return test_results
+        return [get_format_row(template, 1, "Does not compile (with flags)", "",
+                               False)]
+    test_results = []
     for test in tests_data:
         function_prototype = get_function_prototype(template[:-2],
                                                     test.get("args"))
