@@ -5,28 +5,61 @@ from utils.colors import print_success, print_warning, print_info
 from utils.format import remove_ok_tests, get_format_row, get_function_prototype
 from utils.file import rm_rf
 from utils.display import print_table
-from utils.compilation import make_re, inject_argv, compile
+from utils.compilation import make, inject_argv, compile
 
 PROJECT_NAME = "libft"
 
 
 def run_tests(path):
-    test_functions = [ft_isalpha, ft_isdigit, ft_isalnum, ft_isascii,
-                      ft_isprint, ft_strlen, ft_memset, ft_bzero,
-                      ft_memcpy, ft_memmove, ft_strlcpy, ft_strlcat,
-                      ft_toupper, ft_tolower, ft_strchr, ft_strrchr,
-                      ft_strncmp, ft_memchr, ft_memcmp, ft_strnstr,
-                      ft_atoi, ft_calloc, ft_strdup, ft_substr,
-                      ft_strjoin, ft_strtrim, ft_split, ft_itoa,
-                      ft_strmapi, ft_striteri, ft_putchar_fd, ft_putstr_fd,
-                      ft_putendl_fd, ft_putnbr_fd
 
-                      ]
+    mandatory_results = mandatory_tests(path)
+    bonus_results = bonus_tests(path)
+    if isinstance(mandatory_results, list):
+        print_table(f" {PROJECT_NAME.upper()} SUMMARY ", mandatory_results)
+    if isinstance(bonus_results, list):
+        print_table(f" {PROJECT_NAME.upper()} BONUS ", bonus_results)
+
+
+def bonus_tests(path):
+    test_functions = [
+        ft_lstnew, ft_lstadd_front, ft_lstsize, ft_lstlast,
+        ft_lstadd_back, ft_lstdelone, ft_lstclear, ft_lstiter,
+        ft_lstmap
+    ]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
-    print_info("Compiling libft.a with your makefile.")
-    if not make_re(path):
-        return print_warning("libft.a does not compile !")
+    if not make("fclean", path):
+        return print_warning("Fclean rule not found, can not test bonus.")
+    if not make("bonus", path):
+        return print_warning("Bonus rule not found")
+    for function in test_functions:
+        test_results = function(path)
+        test_results_ko = remove_ok_tests(test_results)
+        if len(test_results_ko) > 0:
+            rows += test_results_ko
+        else:
+            rows.append(get_format_row(function.__name__, 0, "", "", True))
+    make("fclean", path)
+    rm_rf(path / ".bin_tests")
+    return rows
+
+
+def mandatory_tests(path):
+    test_functions = [
+        ft_isalpha, ft_isdigit, ft_isalnum, ft_isascii,
+        ft_isprint, ft_strlen, ft_memset, ft_bzero,
+        ft_memcpy, ft_memmove, ft_strlcpy, ft_strlcat,
+        ft_toupper, ft_tolower, ft_strchr, ft_strrchr,
+        ft_strncmp, ft_memchr, ft_memcmp, ft_strnstr,
+        ft_atoi, ft_calloc, ft_strdup, ft_substr,
+        ft_strjoin, ft_strtrim, ft_split, ft_itoa,
+        ft_strmapi, ft_striteri, ft_putchar_fd, ft_putstr_fd,
+        ft_putendl_fd, ft_putnbr_fd
+    ]
+    rows = [["Test", "Your Result", "Expected Result", "Status"]]
+    print_info("Compiling libft.a with your makefile (re rule).")
     print_info("Running tests...")
+    if not make("re", path):
+        return print_warning("libft.a does not compile !")
     for function in test_functions:
         test_results = function(path)
         test_results_ko = remove_ok_tests(test_results)
@@ -35,7 +68,7 @@ def run_tests(path):
         else:
             rows.append(get_format_row(function.__name__, 0, "", "", True))
     rm_rf(path / ".bin_tests")
-    print_table(f" {PROJECT_NAME.upper()} SUMMARY ", rows)
+    return rows
 
 
 def test_exercise(path, template: str, lib: str, tests_data: dict):
@@ -43,18 +76,15 @@ def test_exercise(path, template: str, lib: str, tests_data: dict):
     path_lib = path / lib
     path_bin_tests_dir = path / ".bin_tests"
     path_bin = path_bin_tests_dir / template[:-2]
-    test_results = []
+
     if not os.path.exists(path_bin_tests_dir):
         os.mkdir(path_bin_tests_dir)
     if not os.path.exists(path_lib):
-        row = get_format_row(template[:-2], 998, "File not found", lib, False)
-        test_results.append(row)
-        return test_results
+        return [get_format_row(template[:-2], 998, "File not found", lib, False)]
     if not compile(path_bin, path_template, path_lib):
-        row = get_format_row(template, 1, "Does not compile (with flags)", "",
-                             False)
-        test_results.append(row)
-        return test_results
+        return [get_format_row(template, 1, "Does not compile (with flags)", "",
+                             False)]
+    test_results = []
     for test in tests_data:
         function_prototype = get_function_prototype(template[:-2],
                                                     test.get("args"))
@@ -609,3 +639,101 @@ def ft_putnbr_fd(path):
 
     ]
     return test_exercise(path, "ft_putnbr_fd.c", "libft.a", tests)
+
+
+def ft_lstnew(path):
+    tests = [
+        {"args": ["hello"], "expected": "hello"},
+        {"args": ["42"], "expected": "42"},
+        {"args": ["libft.h"], "expected": "libft.h"},
+        {"args": ["bonus"], "expected": "bonus"},
+
+    ]
+    return test_exercise(path, "ft_lstnew.c", "libft.a", tests)
+
+
+def ft_lstadd_front(path):
+    tests = [
+        {"args": ["node1", "node2"], "expected": "node2->node1"},
+        {"args": ["node1", "node5"], "expected": "node5->node1"},
+        {"args": ["node1", "node_marvin"], "expected": "node_marvin->node1"},
+        {"args": ["node1->node2", "node3"], "expected": "node3->node1->node2"},
+        {"args": ["node1->node2", "node_marvin"], "expected": "node_marvin->node1->node2"},
+        {"args": ["node1->node2", "node5"], "expected": "node5->node1->node2"},
+        {"args": ["node1->node2->node3", "node4"], "expected": "node4->node1->node2->node3"},
+        {"args": ["node1->node2->node3", "node0"], "expected": "node0->node1->node2->node3"},
+        {"args": ["NULL", "node0"], "expected": "node0"},
+    ]
+    return test_exercise(path, "ft_lstadd_front.c", "libft.a", tests)
+
+
+def ft_lstsize(path):
+    tests = [
+        {"args": ["NULL"], "expected": "0"},
+        {"args": ["node1"], "expected": "1"},
+        {"args": ["node1->node2"], "expected": "2"},
+        {"args": ["node1->node2->node3"], "expected": "3"},
+    ]
+    return test_exercise(path, "ft_lstsize.c", "libft.a", tests)
+
+
+def ft_lstlast(path):
+    tests = [
+        {"args": ["NULL"], "expected": "NULL"},
+        {"args": ["node1"], "expected": "node1"},
+        {"args": ["node1->node2"], "expected": "node2"},
+        {"args": ["node1->node2->node3"], "expected": "node3"},
+    ]
+    return test_exercise(path, "ft_lstlast.c", "libft.a", tests)
+
+
+def ft_lstadd_back(path):
+    tests = [
+        {"args": ["NULL", "node1"], "expected": "node1"},
+        {"args": ["node1", "node2"], "expected": "node1->node2"},
+        {"args": ["node1->node2", "node3"], "expected": "node1->node2->node3"},
+        {"args": ["node1->node2->node3", "node4"], "expected": "node1->node2->node3->node4"},
+    ]
+    return test_exercise(path, "ft_lstadd_back.c", "libft.a", tests)
+
+
+def ft_lstdelone(path):
+    tests = [
+        {"args": ["NULL", "node1"], "expected": "NULL"},
+        {"args": ["node1", "node1"], "expected": "NULL"},
+        {"args": ["node1->node2", "node2"], "expected": "node1"},
+        {"args": ["node1->node2->node3", "node2"], "expected": "node1|node3"},
+    ]
+    return test_exercise(path, "ft_lstdelone.c", "libft.a", tests)
+
+
+def ft_lstclear(path):
+    tests = [
+        {"args": ["NULL", "&node1"], "expected": "NULL"},
+        {"args": ["node1", "&node1"], "expected": "NULL"},
+        {"args": ["node1->node2", "&node1"], "expected": "NULL"},
+        {"args": ["node1->node2->node3", "&node1"], "expected": "NULL"},
+    ]
+    return test_exercise(path, "ft_lstclear.c", "libft.a", tests)
+
+
+def ft_lstiter(path):
+    tests = [
+        {"args": ["node1->node2->node3", "strupper"], "expected": "NODE1->NODE2->NODE3"},
+        {"args": ["node1->node2->node3", "strlower"], "expected": "node1->node2->node3"},
+        {"args": ["NULL", "strupper"], "expected": "NULL"},
+        {"args": ["NULL", "strlower"], "expected": "NULL"},
+
+    ]
+    return test_exercise(path, "ft_lstiter.c", "libft.a", tests)
+
+
+def ft_lstmap(path):
+    tests = [
+        {"args": ["node1->node2->node3", "strupper"], "expected": "NODE1->NODE2->NODE3"},
+        {"args": ["node1->node2->node3", "strlower"], "expected": "node1->node2->node3"},
+        {"args": ["NULL", "strupper"], "expected": "NULL"},
+        {"args": ["NULL", "strlower"], "expected": "NULL"},
+
+    ]
+    return test_exercise(path, "ft_lstmap.c", "libft.a", tests)
