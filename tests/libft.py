@@ -34,7 +34,7 @@ def run_tests(path):
             rows += test_results_ko
         else:
             rows.append(get_format_row(function.__name__, 0, "", "", True))
-    # rm_rf(path / ".bin_tests")
+    rm_rf(path / ".bin_tests")
     print_table(f" {PROJECT_NAME.upper()} SUMMARY ", rows)
 
 
