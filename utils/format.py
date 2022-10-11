@@ -16,7 +16,7 @@ def get_format_row(function_prototype, return_code, output, expected,
     if "AddressSanitizer" in output:
         output = "AddressSanitizer"
         validity = "KO"
-    elif "LeakSanitizer" in output:
+    if "LeakSanitizer" in output:
         output = "LeakSanitizer"
         validity = "KO"
     row = [function_prototype, output, expected, validity]
