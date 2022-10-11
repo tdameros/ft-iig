@@ -14,3 +14,9 @@ git clone https://github.com/tdameros/ft-iig
 cd ft-iig
 python3 launcher.py
 ```
+
+## Examples
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/50496792/195208081-5a959c39-6380-4497-8810-e0fb25178f1b.png" />
+</p>
