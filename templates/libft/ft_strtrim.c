@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vfries <vfries@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 23:55:03 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/08 23:56:39 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/12 01:23:15 by vfries           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ int	main(int argc, char **argv)
 		if (s != NULL)
 		{
 			printf("%s", s);
+			if (*s == '\0')
+				printf("\"\"");
 			free(s);
 		}
+		else
+			printf("NULL");
 	}
 }
