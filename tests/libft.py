@@ -515,13 +515,13 @@ def ft_strjoin(path):
 def ft_strtrim(path):
     tests = [
         {"args": ["  test  ", " "], "expected": "test"},
-        {"args": ["         ", " "], "expected": ""},
+        {"args": ["         ", " "], "expected": "\"\""},
         {"args": ["  marvin bot   ", " "], "expected": "marvin bot"},
         {"args": [" z42 networkzzz z z ", " z"], "expected": "42 network"},
         {"args": ["abcdeeedbcatabcddecb", "abcde"], "expected": "t"},
         {"args": ["42", ""], "expected": "42"},
         {"args": ["hello world", " lw"], "expected": "hello world"},
-        {"args": ["", ""], "expected": ""},
+        {"args": ["", ""], "expected": "\"\""},
     ]
     return test_exercise(path, "ft_strtrim.c", "libft.a", tests)
 
