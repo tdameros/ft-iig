@@ -17,7 +17,10 @@ def run_tests(path):
                       ft_toupper, ft_tolower, ft_strchr, ft_strrchr,
                       ft_strncmp, ft_memchr, ft_memcmp, ft_strnstr,
                       ft_atoi, ft_calloc, ft_strdup, ft_substr,
-                      ft_strjoin, ft_strtrim, ft_split
+                      ft_strjoin, ft_strtrim, ft_split, ft_itoa,
+                      ft_strmapi, ft_striteri, ft_putchar_fd, ft_putstr_fd,
+                      ft_putendl_fd, ft_putnbr_fd
+
                       ]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     print_info("Compiling libft.a with your makefile.")
@@ -31,7 +34,7 @@ def run_tests(path):
             rows += test_results_ko
         else:
             rows.append(get_format_row(function.__name__, 0, "", "", True))
-    rm_rf(path / ".bin_tests")
+    # rm_rf(path / ".bin_tests")
     print_table(f" {PROJECT_NAME.upper()} SUMMARY ", rows)
 
 
@@ -508,3 +511,101 @@ def ft_split(path):
         {"args": ["444444442", "4"], "expected": "{2}"},
     ]
     return test_exercise(path, "ft_split.c", "libft.a", tests)
+
+
+def ft_itoa(path):
+    tests = [
+        {"args": [0], "expected": "0"},
+        {"args": [-254], "expected": "-254"},
+        {"args": [123456], "expected": "123456"},
+        {"args": [2147483647], "expected": "2147483647"},
+        {"args": [-2147483648], "expected": "-2147483648"},
+        {"args": [-2147483647], "expected": "-2147483647"},
+        {"args": [2000000000], "expected": "2000000000"},
+        {"args": [-654], "expected": "-654"},
+        {"args": [100005], "expected": "100005"},
+        {"args": [10], "expected": "10"},
+    ]
+    return test_exercise(path, "ft_itoa.c", "libft.a", tests)
+
+
+def ft_strmapi(path):
+    tests = [
+        {"args": ["HELLO WORLD", "ft_tolower"], "expected": "hello world"},
+        {"args": ["42 Network", "ft_tolower"], "expected": "42 network"},
+        {"args": ["marvin", "ft_toupper"], "expected": "MARVIN"},
+        {"args": ["42 lYOn", "ft_toupper"], "expected": "42 LYON"},
+        {"args": ["c the best", "ft_upper_eveni"], "expected": "C ThE BeSt"},
+        {"args": ["le bocal", "ft_upper_eveni"], "expected": "Le bOcAl"},
+        {"args": ["", "ft_tolower"], "expected": ""},
+        {"args": ["", "ft_toupper"], "expected": ""},
+        {"args": ["", "ft_upper_eveni"], "expected": ""},
+    ]
+    return test_exercise(path, "ft_strmapi.c", "libft.a", tests)
+
+
+def ft_striteri(path):
+    tests = [
+        {"args": ["HELLO WORLD", "ft_tolower"], "expected": "hello world"},
+        {"args": ["42 Network", "ft_tolower"], "expected": "42 network"},
+        {"args": ["marvin", "ft_toupper"], "expected": "MARVIN"},
+        {"args": ["42 lYOn", "ft_toupper"], "expected": "42 LYON"},
+        {"args": ["c the best", "ft_upper_eveni"], "expected": "C ThE BeSt"},
+        {"args": ["le bocal", "ft_upper_eveni"], "expected": "Le bOcAl"},
+        {"args": ["", "ft_tolower"], "expected": ""},
+        {"args": ["", "ft_toupper"], "expected": ""},
+        {"args": ["", "ft_upper_eveni"], "expected": ""},
+    ]
+    return test_exercise(path, "ft_striteri.c", "libft.a", tests)
+
+
+def ft_putchar_fd(path):
+    tests = [
+        {"args": ["4", 1], "expected": "4"},
+        {"args": ["c", 1], "expected": "c"},
+        {"args": ["t", 1], "expected": "t"},
+        {"args": ["%", 1], "expected": "%"},
+        {"args": ["+", 1], "expected": "+"},
+
+    ]
+    return test_exercise(path, "ft_putchar_fd.c", "libft.a", tests)
+
+
+def ft_putstr_fd(path):
+    tests = [
+        {"args": ["42", 1], "expected": "42"},
+        {"args": ["coucou", 1], "expected": "coucou"},
+        {"args": ["terminal", 1], "expected": "terminal"},
+        {"args": ["%^^$#", 1], "expected": "%^^$#"},
+        {"args": ["+-=]", 1], "expected": "+-=]"},
+
+    ]
+    return test_exercise(path, "ft_putstr_fd.c", "libft.a", tests)
+
+
+def ft_putendl_fd(path):
+    tests = [
+        {"args": ["42", 1], "expected": "42\n"},
+        {"args": ["coucou", 1], "expected": "coucou\n"},
+        {"args": ["terminal", 1], "expected": "terminal\n"},
+        {"args": ["%^^$#", 1], "expected": "%^^$#\n"},
+        {"args": ["+-=]", 1], "expected": "+-=]\n"},
+
+    ]
+    return test_exercise(path, "ft_putendl_fd.c", "libft.a", tests)
+
+
+def ft_putnbr_fd(path):
+    tests = [
+        {"args": ["585", 1], "expected": "585"},
+        {"args": ["-5547", 1], "expected": "-5547"},
+        {"args": ["-655222", 1], "expected": "-655222"},
+        {"args": ["-6587", 1], "expected": "-6587"},
+        {"args": ["-123", 1], "expected": "-123"},
+        {"args": ["+123", 1], "expected": "123"},
+        {"args": ["+2147483647", 1], "expected": "2147483647"},
+        {"args": ["-2147483648", 1], "expected": "-2147483648"},
+        {"args": ["-2147483647", 1], "expected": "-2147483647"},
+
+    ]
+    return test_exercise(path, "ft_putnbr_fd.c", "libft.a", tests)

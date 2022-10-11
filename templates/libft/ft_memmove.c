@@ -6,7 +6,7 @@
 /*   By: vfries <vfries@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 20:43:46 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/10 20:33:00 by vfries           ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 23:18:30 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,7 @@ int	main(int argc, char **argv)
 		if (!strcmp(argv[1], "string"))
 			memmove_string_type(argv[2], argv[3], n, overlap);
 		else if (!strcmp(argv[1], "int"))
-		{
-			int test1 = atoi(argv[2]);
-			int	test2 = atoi(argv[3]);
-			memmove_int_type(test1, test2, n, overlap);
-		}
+			memmove_int_type(atoi(argv[2]), atoi(argv[3]), n, overlap);
 		else if (!strcmp(argv[1], "float"))
 			memmove_float_type(atof(argv[2]), atof(argv[3]), n, overlap);
 	}

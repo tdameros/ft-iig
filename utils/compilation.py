@@ -5,7 +5,7 @@ import logging
 def compile(out_name, *files):
     logging.debug(out_name)
     print_files = " ".join([str(file) for file in files])
-    logging.debug(" ".join(["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", print_files, "-o", str(out_name)]))
+    logging.debug(" ".join(["gcc", "-Wall", "-Wextra", "-Werror", "-fsanitize=address", print_files, "-o", str(out_name)]))
     gcc = subprocess.Popen(
         ["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", *files,
          "-o", out_name],

@@ -6,14 +6,14 @@
 /*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 22:47:33 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/08 22:51:03 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/10 23:19:14 by tdameros         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-char *ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 int	main(int argc, char **argv)
 {
