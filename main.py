@@ -71,9 +71,9 @@ if __name__ == "__main__":
     GOINFRE_PATH = get_goinfre_dir()
     PATH = GOINFRE_PATH / "ft_iig"
     print('\n' + '\n'.join([f"* - {project}" for project in PROJECTS.keys()]) + '\n')
-    select_project = input("Select your project (name) :")
-    while select_project.upper() not in PROJECTS:
-        select_project = input("[INVALID] Select your project (name) :")
+    select_project = input("Select your project (name) :").upper()
+    while select_project not in PROJECTS:
+        select_project = input("[INVALID] Select your project (name) :").upper()
     run_git_clone()
     run_norminette()
     PROJECTS.get(select_project)(PATH)
