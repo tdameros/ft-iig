@@ -20,9 +20,10 @@ def compile(out_name, *files):
 
 def make(rule, path):
     logging.debug(f"make {rule} ({str(path)})")
-    make = subprocess.Popen(["make", rule], cwd=path, stdout=subprocess.PIPE,
+    make = subprocess.run(["make", rule], cwd=path, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-    make.wait()
+    if "No rule to make target" in make.stderr.decode():
+        return 2
     if make.returncode != 0:
         return 0
     return 1
