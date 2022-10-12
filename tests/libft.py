@@ -636,6 +636,7 @@ def ft_putnbr_fd(path):
         {"args": ["+2147483647", 1], "expected": "2147483647"},
         {"args": ["-2147483648", 1], "expected": "-2147483648"},
         {"args": ["-2147483647", 1], "expected": "-2147483647"},
+        {"args": ["0", 1], "expected": "0"},
 
     ]
     return test_exercise(path, "ft_putnbr_fd.c", "libft.a", tests)
