@@ -29,8 +29,11 @@ def bonus_tests(path):
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     if not make("fclean", path):
         return print_warning("Fclean rule not found, can not test bonus.")
-    if not make("bonus", path):
-        return print_warning("Bonus rule not found")
+    make_return = make("bonus", path)
+    if make_return == 2:
+        return print_warning("bonus rule not found")
+    if make_return == 0:
+        return print_warning("Bonus does not compile!")
     for function in test_functions:
         test_results = function(path)
         test_results_ko = remove_ok_tests(test_results)
@@ -58,8 +61,11 @@ def mandatory_tests(path):
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     print_info("Compiling libft.a with your makefile (re rule).")
     print_info("Running tests...")
-    if not make("re", path):
-        return print_warning("libft.a does not compile !")
+    make_return = make("re", path)
+    if make_return == 2:
+        return print_warning("re rule not found")
+    if make_return == 0:
+        return print_warning("libft.a does not compile!")
     for function in test_functions:
         test_results = function(path)
         test_results_ko = remove_ok_tests(test_results)
