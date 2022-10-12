@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tdameros <tdameros@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vfries <vfries@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 12:42:19 by tdameros          #+#    #+#             */
-/*   Updated: 2022/10/11 13:10:40 by tdameros         ###   ########lyon.fr   */
+/*   Updated: 2022/10/12 19:24:39 by vfries           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 3)
 	{
+		str_map = NULL;
 		if (!strcmp(argv[2], "ft_tolower"))
 			str_map = ft_strmapi(argv[1], ft_tolower);
 		else if (!strcmp(argv[2], "ft_toupper"))
