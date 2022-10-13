@@ -3,7 +3,7 @@ from pathlib import Path
 
 from utils.colors import print_success, print_warning, print_info
 from utils.format import remove_ok_tests, get_format_row, get_function_prototype
-from utils.file import rm_rf
+from utils.file import rm_rf, run_norminette
 from utils.display import print_table
 from utils.compilation import make, inject_argv, compile
 
@@ -11,7 +11,7 @@ PROJECT_NAME = "libft"
 
 
 def run_tests(path):
-
+    run_norminette(path)
     mandatory_results = mandatory_tests(path)
     bonus_results = bonus_tests(path)
     if isinstance(mandatory_results, list):
@@ -28,12 +28,12 @@ def bonus_tests(path):
     ]
     rows = [["Test", "Your Result", "Expected Result", "Status"]]
     if not make("fclean", path):
-        return print_warning("Fclean rule not found, can not test bonus.")
+        return print_warning("fclean rule not found, can not test bonus.")
     make_return = make("bonus", path)
     if make_return == 2:
         return print_warning("bonus rule not found")
     if make_return == 0:
-        return print_warning("Bonus does not compile!")
+        return print_warning("bonus does not compile !")
     for function in test_functions:
         test_results = function(path)
         test_results_ko = remove_ok_tests(test_results)
@@ -65,7 +65,7 @@ def mandatory_tests(path):
     if make_return == 2:
         return print_warning("re rule not found")
     if make_return == 0:
-        return print_warning("libft.a does not compile!")
+        return print_warning("libft.a does not compile !")
     for function in test_functions:
         test_results = function(path)
         test_results_ko = remove_ok_tests(test_results)
