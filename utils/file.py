@@ -17,7 +17,7 @@ def run_norminette(path):
     norminette = subprocess.run(["norminette"], stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, cwd=path)
     if norminette.returncode == 1:
-        print_warning("NORMINETTE ERROR !")
+        print_warning("NORMINETTE ERROR!")
         print(norminette.stdout.decode())
     else:
         print_success("Norminette OK")
