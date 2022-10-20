@@ -42,3 +42,14 @@ def remove_colors(message: str):
     for color in colors:
         message = message.replace(color, "")
     return message
+
+
+def get_color_row(row, color):
+    for index_column, column in enumerate(row):
+        if color == "blue":
+            row[index_column] = get_info_message(column)
+        elif color == "red":
+            row[index_column] = get_warning_messsage(column)
+        elif color == "green":
+            row[index_column] = get_success_message(column)
+    return row

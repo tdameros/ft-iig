@@ -30,6 +30,22 @@ def get_format_row(function_prototype, return_code, output, expected,
     return row
 
 
+def get_status(return_code, output, assert_equal):
+    if return_code == 999:
+        return "KO", "Time Out"
+    elif return_code == -11:
+        return "KO", "Segmentation Fault"
+    elif return_code == -10:
+        return "KO", "Bus Error"
+    elif "LeakSanitizer" in output:
+        return "KO", "LeakSanitizer"
+    elif "AddressSanitizer" in output:
+        return "KO", "AddressSanitizer"
+    elif assert_equal:
+        return "OK", output
+    return "KO", "Wrong result"
+
+
 def remove_ok_tests(test_results):
     return [test for test in test_results if
             test[3] != get_success_message("OK")]

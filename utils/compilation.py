@@ -2,16 +2,27 @@ import subprocess
 import logging
 
 
-def compile(out_name, *files):
-    logging.debug(out_name)
+def compile(out_name, *files, options=None):
     print_files = " ".join([str(file) for file in files])
-    logging.debug(" ".join(
-        ["gcc", "-Wall", "-Wextra", "-Werror", "-fsanitize=address",
-         print_files, "-o", str(out_name)]))
-    gcc = subprocess.Popen(
-        ["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", *files,
-         "-o", out_name],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print_options = " ".join([str(option) for option in options])
+    if options:
+        logging.debug(" ".join(
+            ["gcc", "-Wall", "-Werror", "-Wextra", print_options,
+             "-fsanitize=address", print_files,
+             "-o", str(out_name)]))
+        gcc = subprocess.Popen(
+            ["gcc", "-Wall", "-Werror", "-Wextra", *options,
+             "-fsanitize=address", *files,
+             "-o", out_name],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    else:
+        logging.debug(" ".join(
+            ["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", print_files,
+             "-o", str(out_name)]))
+        gcc = subprocess.Popen(
+            ["gcc", "-Wall", "-Werror", "-Wextra", "-fsanitize=address", *files,
+             "-o", out_name],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     gcc.wait()
     if gcc.returncode != 0:
         return 0
@@ -21,7 +32,7 @@ def compile(out_name, *files):
 def make(rule, path):
     logging.debug(f"make {rule} ({str(path)})")
     make = subprocess.run(["make", rule], cwd=path, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+                          stderr=subprocess.PIPE)
     if "No rule to make target" in make.stderr.decode():
         return 2
     if make.returncode != 0:

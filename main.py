@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 
 import tests.libft
+import tests.get_next_line
 from utils.file import rm_rf
 from utils.display import print_ascii, clear_console
 from utils.colors import print_info, print_warning, print_success
@@ -13,10 +14,10 @@ GOINFRE_PATH = Path.home() / "goinfre/"
 PATH = GOINFRE_PATH / "ft_iig/"
 PROJECTS = {
     "libft": tests.libft.run_tests,
-    "get_next_line (coming soon)": tests.libft.run_tests,
+    "get_next_line": tests.get_next_line.run_tests,
 }
 
-logging.basicConfig(level=logging.WARNING,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s : %(message)s')
 
 
