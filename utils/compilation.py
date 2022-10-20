@@ -4,8 +4,8 @@ import logging
 
 def compile(out_name, *files, options=None):
     print_files = " ".join([str(file) for file in files])
-    print_options = " ".join([str(option) for option in options])
     if options:
+        print_options = " ".join([str(option) for option in options])
         logging.debug(" ".join(
             ["gcc", "-Wall", "-Werror", "-Wextra", print_options,
              "-fsanitize=address", print_files,
