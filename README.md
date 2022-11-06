@@ -15,6 +15,11 @@ cd ft-iig
 python3 launcher.py
 ```
 
+## Supported projects
+
+- libft
+- get_next_line
+
 ## Examples
 
 <p align="center">
