@@ -17,8 +17,7 @@ PROJECTS = {
     "get_next_line": tests.get_next_line.run_tests,
 }
 
-logging.basicConfig(level=logging.WARNING,
-                    format='%(asctime)s : %(message)s')
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s : %(message)s')
 
 
 def is_valid_rendering_type(url_or_path):
